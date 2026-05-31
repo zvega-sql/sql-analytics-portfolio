@@ -1,0 +1,38 @@
+// ==============================================================
+// Formula:     Track Name Grouping — "Others" Bucket
+// Type:        DAX Calculated Column (Power Pivot / Power BI)
+// Table:       Query1
+// Column:      [TRACK_NAME] (source), grouped result (output)
+// Description: Evaluates the total earnings across ALL rows
+//              sharing the same TRACK_NAME. If a track's aggregate
+//              total is below $4,000, it is relabeled as "Others"
+//              in the output column. Tracks at or above $4,000
+//              retain their original name.
+// Use Case:    Collapses low-earning long-tail tracks into a single
+//              "Others" category for cleaner chart and pivot table
+//              presentation, preventing minor tracks from cluttering
+//              visualizations.
+// Notes:       CALCULATE() overrides the default row context so the
+//              SUM is evaluated across the entire TRACK_NAME group,
+//              not just the current row's value.
+//              ALLEXCEPT() removes all filters from the table EXCEPT
+//              the TRACK_NAME filter — this ensures each row sees
+//              the full total for its track across all other
+//              dimensions (stores, territories, periods, etc.).
+//              The $4,000 threshold is hardcoded — adjust as needed
+//              for different reporting periods or client contexts.
+// ==============================================================
+
+=IF(
+
+    // Compute the total earnings for every row that shares this row's TRACK_NAME.
+    // ALLEXCEPT removes all slicer/filter context except TRACK_NAME,
+    // so the SUM reflects the full cross-dimensional total for the track.
+    CALCULATE(
+        SUM('Query1'[Total]),
+        ALLEXCEPT('Query1', 'Query1'[TRACK_NAME])
+    ) < 4000,       // Threshold: tracks earning less than $4,000 in total → "Others"
+
+    "Others",           // Label applied to low-earning tracks
+    'Query1'[TRACK_NAME] // High-earning tracks keep their original name
+)
