@@ -1,6 +1,3 @@
-# sql-analytics-portfolio
-SQL queries for music royalty data analysis, covering PROs, distributors, and publishers.
-
 # SQL Analytics Portfolio
 
 Production SQL queries written for music royalty data analysis across 
