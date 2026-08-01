@@ -5,7 +5,7 @@ multiple rights organizations and distributors.
 
 ## Environment
 - **Database:** SQL Server (T-SQL)
-- **Tools:** SSMS, Power Query (M), Excel Data Model
+- **Tools:** SSMS, Power Query (M), Excel Data Model, Python (pandas)
 
 ## What's in Here
 
@@ -27,3 +27,15 @@ Same queries cross-referenced by the data source they target:
 Proprietary values (artist IDs, internal identifiers) have been replaced 
 with `[ARTIST_ID]` placeholders. Schema and table names reflect a real 
 enterprise SQL Server environment.
+
+### python/
+Pandas rewrites of PowerShell and manual workflows, replacing COM automation
+and file-by-file extraction with a few lines of pandas.
+
+- `extract_apra_data.py` — Extracts royalty totals and remittance payments
+  from APRA AMCOS PDF statements, previously a manual per-file process
+- `convert_to_csv.py` — Batch-converts Excel/TXT files to CSV, pandas
+  rewrite of Convert-XlsToCsv.ps1
+- `split_onerpm_workbook.py` — Splits multi-tab ONErpm earnings workbooks
+  into per-sheet CSVs, pandas rewrite of a COM-based splitter with retry
+  handling
